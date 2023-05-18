@@ -1,0 +1,22 @@
+ 
+{% for m in movimientos %}
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">{{ m.iduser }}
+            <span class="badge bg-primary rounded-pill">{{m.fcFechaMovimiento|date:'d-m-Y' }}</span>
+        </div>
+        
+        <p>{{m.txMovimiento|truncatechars:150}} <span class="badge bg-light rounded-pill"><a href="#">Ver más</a></span>
+        </p>
+        
+      </div>
+{% empty %}
+<p> -- No hay movimientos -- </p>
+{% endfor %}
+<div class="row">
+    <div class='col'>
+        <button type="button" id="nuevomovimiento" class="btn js-movimientos-create" data-bs-whatever="Nuevo Movimiento"><i class="feather icon-plus-circle"></i> Nuevo </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn" title="" data-bs-original-title=""><i class="feather icon-eye"></i> Todos </button>
+    </div>
+</div>

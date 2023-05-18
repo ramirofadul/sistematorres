@@ -1,0 +1,164 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Sample page {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!-- [ Modal ] start -->
+<div class="modal fade" id="modal-juicios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title"></h5>
+		</div>
+		<div class="modal-body">
+		
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cerrar</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <!-- [ Modal ] end -->
+	<!-- [ Main Content ] start -->
+	<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			{% if messages %}
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				{{ messages }}
+				<button type="submit" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			  </div>
+			{% endif %}
+			<!-- [ breadcrumb ] start -->
+			<div class="page-header">
+				<div class="page-block">
+					<div class="row align-items-center">
+						<div class="col-md-12">
+							<div class="row">
+							<div class="col-md-8">
+								<div class="page-header-title">
+									<h5 class="m-b-10">{{ juicio.id }} - {{ juicio.txCaratula }}</h5>	
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="btn-toolbar mb-2 mb-md-0">
+									<button type="submit" class="btn btn-sm btn-primary" onclick="JuicioUpdate()" name="save_juicio "value="Guardar">Guardar</button>							  
+									<div class="btn-group me-2">
+									  <button type="button" class="btn btn-sm btn-outline-secondary">Cambiar a Contador</button>
+									</div>
+								</div>
+							</div>
+							</div>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+								<li class="breadcrumb-item">Derivación: {{ juicio.fcFechaDerivacion|date:'d-m-Y' }}</li>
+								<li class="breadcrumb-item">Carga: {{ juicio.fcFechaInicio|date:'d-m-Y'}}</li>
+								<li class="breadcrumb-item">Ultima Modificacion: {{ juicio.fcUltimaModificacion|date:'d-m-Y'}}</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [ breadcrumb ] end -->
+			<!-- [ Main Content ] start -->
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-8">
+					<div class="card">
+					
+						<div class="card-body fs-6">
+						{% crispy form %}	
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="accordion" id="accordionExample">
+								<div class="accordion-item">
+								  <h2 class="accordion-header" id="headingOne">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									  Últimos Movimientos
+									</button>
+								  </h2>
+								  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+										{% include 'juicios/juicios_update/juicios_update_movimientos.html' %}
+									</div>
+								  </div>
+								</div>
+								<div class="accordion-item">
+								  <h2 class="accordion-header" id="headingTwo">
+									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									  Pedidos de Montos
+									</button>
+								  </h2>
+								  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+									  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+									</div>
+								  </div>
+								</div>
+								<div class="accordion-item">
+								  <h2 class="accordion-header" id="headingThree">
+									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									  Documentos
+									</button>
+								  </h2>
+								  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+									  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+									</div>
+								  </div>
+								</div>
+							  </div>
+						</div>
+					</div>
+				</div>
+
+				<!-- [ sample-page ] end -->
+			</div>
+			<!-- [ Main Content ] end -->
+		</div>
+	</div>
+	<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+	function JuicioUpdate() {
+    document.getElementById("JuicioUpdateForm").submit();
+  };
+</script>
+<script src="/static/assets/js/pages/juicios_update.js"></script>
+<script>
+
+$("#modal-juicios").on("submit", ".js-movimientos-create-form", function () {
+    var form = $(this);
+    $.ajax({
+      url: form.attr("action"),
+      data: form.serialize(),
+      type: form.attr("method"),
+      dataType: 'json',
+      success: function (data) {
+        if (data.form_is_valid) {
+          alert("Movimiento Creado!!");  // <-- This is just a placeholder for now for testing
+        }
+        else {
+          $("#modal-juicios .modal-body").html(data.html_form);
+        }
+      }
+    });
+    return false;
+});
+
+
+</script>
+{% endblock javascripts %}
